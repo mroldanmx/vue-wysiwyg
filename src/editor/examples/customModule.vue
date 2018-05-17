@@ -1,5 +1,6 @@
 <template>
     <div>
+        <input type="text">
         <button type="button" @click="blockquote ">Wrap in blockquote</button>
     </div>
 </template>

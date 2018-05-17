@@ -41,6 +41,8 @@ import table from "./modules/table.vue";
 import removeFormat from "./modules/removeFormat.js";
 
 import separator from "./modules/separator.js";
+import customModule from "./examples/customModule.vue";
+import barcode from "./modules/barcode.vue";
 
 const modules = [
     bold, italic, underline, separator,
@@ -48,7 +50,7 @@ const modules = [
     headings, hyperlink, code,
     list_ordered, list_unordered, separator,
     image, table, separator,
-    removeFormat
+    removeFormat, customModule, barcode
 ];
 
 export default {
@@ -157,6 +159,7 @@ export default {
           }
         },
         exec (cmd, arg, sel){
+            console.log(cmd,arg, sel)
             sel !== false && this.selection && this.restoreSelection(this.selection);
             document.execCommand(cmd, false, arg||"");
             this.clearSelection();

@@ -1,6 +1,9 @@
 <template lang="pug">
 .wrapper
-  wysiwyg(v-model="msg")
+  wysiwyg#editor(v-model="msg")
+  hr
+  h3 Label preview
+  .preview(v-html="preview")   
 </template>
 
 <script>
@@ -8,24 +11,9 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: `<p>Welcome to <b>vue-wysiwyg</b>!</p>
-      <p>
-        <br>
-        <img src="https://static.pexels.com/photos/177809/pexels-photo-177809.jpeg">
-      </p>
-      <br>
-      <p>
-        The editor is quite fast and lightweight. Elements are minimally styled.
-      </p>
-      <br>
-      <p>
+      msg: `
+        
       <table>
-        <thead>
-        <tr>
-          <th>Numbered lists:</th>
-          <th>Non-numbered lists:</th>
-        </tr>
-        </thead>
         <tbody>
         <tr>
           <td>
@@ -44,8 +32,13 @@ export default {
         </tr>
         </tbody>
         </table>
-      </p>
+      
       `
+    }
+  },
+  computed:{
+    preview(){
+      return this.msg;
     }
   }
 }
@@ -80,5 +73,30 @@ body {
                 Cantarell,
                 "Helvetica Neue",
                 sans-serif;
+}
+
+.preview{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 6in;
+    height: 4in;
+    overflow: hidden;
+}          
+
+@media print {
+  #editor, hr, h3{
+    display: none;
+  }
+
+  .preview {
+    border: none;
+    position: absolute;
+    top: 0;
+  }  
+
+  @page {
+    size: auto;   /* auto is the initial value */
+      margin: 0;  /* this affects the margin in the printer settings */
+  }
 }
 </style>

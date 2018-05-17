@@ -7,6 +7,7 @@
         <label>
             Link Title
             <input type="text" style="width: 40%" v-model="title">
+            <input type="text" style="width: 40%" >
         </label>
 
         <button type="submit">Insert</button>
