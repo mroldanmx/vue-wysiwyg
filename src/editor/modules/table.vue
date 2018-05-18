@@ -2,11 +2,11 @@
     <form @submit.prevent="insertTable" class="form">
         <label>
             <div>Rows</div>
-            <input type="number" style="width: 60px"  min="2" v-model="rows">
+            <input type="number" style="width: 60px"  min="1" v-model="rows">
         </label>
         <label>
             <div>Columns</div>
-            <input type="number" style="width: 60px"  min="2" v-model="cols">
+            <input type="number" style="width: 60px"  min="1" v-model="cols">
         </label>
 
         <button type="submit">Insert</button>

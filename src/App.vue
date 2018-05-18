@@ -1,45 +1,79 @@
 <template lang="pug">
 .wrapper
+  TemplateList
+  
   wysiwyg#editor(v-model="msg")
-  hr
-  h3 Label preview
-  .preview(v-html="preview")   
+  
+  .half-width
+    h3 Label preview
+    .preview(v-html="preview" :style="style")   
+    .label-options.no-print
+      h3 Label options
+      label width 
+      input(type="text" placeholder="Label width" v-model="lWidth")
+      label height 
+      input(type="text" placeholder="Label height" v-model="lHeight")
+      select(v-model="selectedOrientation")
+        option(v-for="(o, index) of labelOrientations" :value="o" :key="index") {{o}}
 </template>
 
 <script>
+import TemplateList from './TemplateList';
+
 export default {
   name: 'app',
   data () {
     return {
-      msg: `
-        
-      <table>
-        <tbody>
-        <tr>
-          <td>
-
-            <ol>
-              <li>Item #1</li>
-              <li>Item #2</li>
-            </ol>
-          </td>
-          <td>
-            <ul>
-              <li>Item #1</li>
-              <li>Item #2</li>
-            </ul>
-          </td>
-        </tr>
-        </tbody>
-        </table>
-      
-      `
+      labelUOM: 'in' ,
+      lWidth: '6',
+      lHeight: '4',
+      labelOrientations: ['landscape', 'portrait'],
+      selectedOrientation: 'landscape',
+      msg: '',
     }
   },
-  computed:{
+  computed:{    
     preview(){
       return this.msg;
+    },
+
+    labelWidth(){
+      return `${this.lWidth}${this.labelUOM}`;
+    },
+
+    labelHeight(){
+      return `${this.lHeight}${this.labelUOM}`;
+    },
+
+    orientation(){
+      if (this.selectedOrientation === 'landscape' ){
+        return {}
+      }      
+
+      return { transform: 'rotate(90deg)' }
+    },
+
+    style(){
+      return { width: this.labelWidth, height: this.labelHeight, ...this.orientation }
+    },
+  },
+
+  methods:{
+    getParamFromURL(paramName){
+      let uri = window.location.search.substring(1); 
+      let params = new URLSearchParams(uri);
+      return params.get(paramName);
     }
+  },
+  mounted(){
+    this.labelUOM = this.getParamFromURL('labelUOM') || this.labelUOM;
+    this.lWidth = this.getParamFromURL('lWidth') || this.lWidth;
+    this.lHeight = this.getParamFromURL('lHeight') || this.lHeight;
+    this.selectedOrientation = this.getParamFromURL('selectedOrientation') || this.selectedOrientation;
+  },
+
+  components:{
+    TemplateList
   }
 }
 </script>
@@ -49,7 +83,14 @@ export default {
   margin:0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Arial Narrow';
 }
+
+@font-face{
+  font-family: 'Arial Narrow';
+  src: url('http://allfont.net/allfont.css?fonts=arial-narrow');
+}
+
 .wrapper {
   max-width: 800px;
   margin: 10em auto;
@@ -63,28 +104,23 @@ export default {
   margin-top: 60px;
 }
 
-body {
-  font-family: -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Oxygen-Sans,
-                Ubuntu,
-                Cantarell,
-                "Helvetica Neue",
-                sans-serif;
+.half-width{
+  width:50%; float: left;
 }
 
 .preview{
     border: 1px solid black;
     border-radius: 5px;
-    width: 6in;
-    height: 4in;
     overflow: hidden;
 }          
 
+.preview .barcode{
+    overflow:hidden !important;
+}
+
+
 @media print {
-  #editor, hr, h3{
+  #editor, hr, h3, .no-print{
     display: none;
   }
 
@@ -94,9 +130,23 @@ body {
     top: 0;
   }  
 
+  .barcode{
+    overflow:hidden !important;
+  }
+  
+
   @page {
     size: auto;   /* auto is the initial value */
       margin: 0;  /* this affects the margin in the printer settings */
   }
 }
+
+    .barcode{
+        resize: both;                            
+        overflow: auto;
+    }
+
+    .barcode img{  
+        width: 100%;
+    }
 </style>

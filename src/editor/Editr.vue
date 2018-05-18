@@ -12,6 +12,8 @@
         )
 
     .editr--content(ref="content", contenteditable="true", tabindex="1", :placeholder="placeholder")
+    .btns
+        button(@click="save()") Save 
 
 </template>
 
@@ -45,10 +47,12 @@ import customModule from "./examples/customModule.vue";
 import barcode from "./modules/barcode.vue";
 
 const modules = [
-    bold, italic, underline, separator,
-    alignLeft, alignCenter, alignRight, separator,
-    headings, hyperlink, code,
-    list_ordered, list_unordered, separator,
+    bold, italic, //underline, separator,
+    //alignLeft, alignCenter, alignRight, separator,
+    headings, 
+    //hyperlink, 
+    code,
+    //list_ordered, list_unordered, separator,
     image, table, separator,
     removeFormat, customModule, barcode
 ];
@@ -196,6 +200,10 @@ export default {
         syncHTML () {
             if (this.html !== this.$refs.content.innerHTML)
                 this.innerHTML = this.html;
+        },
+
+        save(){
+            console.log(this.innerHTML);
         }
     },
 
@@ -205,7 +213,8 @@ export default {
         document.addEventListener("click", this.onDocumentClick);
 
         this.$refs.content.addEventListener("focus", this.onFocus);
-        this.$refs.content.addEventListener("input", this.onInput);
+        this.$refs.content.addEventListener("focusout", this.onInput);
+        this.$refs.content.addEventListener("input", this.onInput);        
         this.$refs.content.addEventListener("blur", this.onContentBlur, { capture: true });
         this.$refs.content.style.maxHeight = this.mergedOptions.maxHeight;
     },

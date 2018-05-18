@@ -5,7 +5,11 @@
         <select @click="log($event)"  v-model="format">
             <option v-for="(code, index) in formats" :key="index" :value="code">{{code}}</option>
         </select>
-        <Barcode ref="the-barcode" :value="bcValue" :format="format" />
+
+        <label>width</label>
+        <input type="text" @click="log($event)" v-model="width" >
+        
+        <Barcode ref="the-barcode" :value="bcValue" :format="format" :width="width" :displayValue="false"/>                            
         <button type="submit">Insert</button>
     </form>
 </template>
@@ -23,8 +27,9 @@ export default {
     },
     data() {
         return {
-            bcValue: "123456",
+            bcValue: "",
             format: "CODE39",
+            width: "2",
             formats: [
                 "CODE39",
                 "CODE128",
@@ -68,4 +73,3 @@ export default {
     }
 }
 </script>
-

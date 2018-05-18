@@ -22,7 +22,6 @@
   "dependencies": {
     "debounce": "^1.1.0",
     "vue": "^2.5.13",
-    "vue-barcode": "^1.1.0",
     "vue-barcode-img": "1.1.1",
     "vue2-dropzone": "^3.0.4"
   },
